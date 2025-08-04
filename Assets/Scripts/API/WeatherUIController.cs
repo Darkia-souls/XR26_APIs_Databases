@@ -51,7 +51,17 @@ namespace WeatherApp.UI
             try
             {
                 // TODO: Call API client to get weather data
+              var weatherData = await apiClient.GetWeatherDataAsync(cityName);
               
+              if (weatherData != null && weatherData.IsValid)
+              {
+                  DisplayWeatherData(weatherData);
+                  SetStatusText("Weather data loaded successfully");
+              }
+              else 
+              {
+                  SetStatusText("Failed to get weaher data. Please try again later.");
+              }
                 
                 // TODO: Handle the response
             }
@@ -84,9 +94,13 @@ namespace WeatherApp.UI
             // TODO: Add more weather details
             if (weatherData.Main != null)
             {
-                displayText += "";
-                displayText += "";
+                displayText += $"City: {weatherData.CityName}\n";
+                displayText += $"Temperature: {weatherData.TemperatureInCelsius:F1}°C (Feels like: {weatherData.Main.FeelsLike:F1}°C)\n";
+                displayText += $"Description: {weatherData.PrimaryDescription}\n";
+                displayText += $"Humidity: {weatherData.Main.Humidity}%\n";
+                displayText += $"Pressure: {weatherData.Main.Pressure} hPa\n";
             }
+            
             
             weatherDisplayText.text = displayText;
         }

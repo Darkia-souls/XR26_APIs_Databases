@@ -10,16 +10,20 @@ namespace WeatherApp.Data
     [Serializable]
     public class WeatherData
     {
-        // TODO: Add JsonProperty attribute for "main"
+        // TODO: Add JsonProperty attribute for "main" //DONE
+        [JsonProperty("main")]
         public MainWeatherInfo Main { get; set; }
         
-        // TODO: Add JsonProperty attribute for "weather"
+        // TODO: Add JsonProperty attribute for "weather" //DONE
+        [JsonProperty("weather")]
         public WeatherDescription[] Weather { get; set; }
         
-        // TODO: Add JsonProperty attribute for "name"
+        // TODO: Add JsonProperty attribute for "name" //DONE
+        [JsonProperty("name")]
         public string CityName { get; set; }
         
         // TODO: Add JsonProperty attribute for "cod"
+        [JsonProperty("cod")]
         public int StatusCode { get; set; }
         
         // Helper properties for easier data access
@@ -32,21 +36,25 @@ namespace WeatherApp.Data
 
     /// <summary>
     /// Main weather information (temperature, humidity, etc.)
-    /// TODO: Students will complete the JsonProperty attributes
+    /// TODO: Students will complete the JsonProperty attributes //DONE
     /// </summary>
     [Serializable]
     public class MainWeatherInfo
     {
         // TODO: Add JsonProperty attribute for "temp"
+        [JsonProperty("temp")]
         public float Temperature { get; set; }
         
         // TODO: Add JsonProperty attribute for "feels_like"
+        [JsonProperty("feels_like")]
         public float FeelsLike { get; set; }
         
         // TODO: Add JsonProperty attribute for "humidity"
+        [JsonProperty("humidity")]
         public int Humidity { get; set; }
         
         // TODO: Add JsonProperty attribute for "pressure"
+        [JsonProperty("pressure")]
         public int Pressure { get; set; }
     }
 
@@ -58,12 +66,15 @@ namespace WeatherApp.Data
     public class WeatherDescription
     {
         // TODO: Add JsonProperty attribute for "main"
+        [JsonProperty("main")]
         public string Main { get; set; }
         
         // TODO: Add JsonProperty attribute for "description"
+        [JsonProperty("description")]
         public string Description { get; set; }
         
         // TODO: Add JsonProperty attribute for "icon"
+        [JsonProperty("icon")]
         public string Icon { get; set; }
     }
 }

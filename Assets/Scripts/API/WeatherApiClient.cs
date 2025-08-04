@@ -16,6 +16,7 @@ namespace WeatherApp.Services
     {
         [Header("API Configuration")]
         [SerializeField] private string baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+        [SerializeField] private string apiKey = "144b966c6258d859947df68b6f9a1497";
         
         /// <summary>
         /// Fetch weather data for a specific city using async/await pattern
@@ -39,16 +40,36 @@ namespace WeatherApp.Services
                 return null;
             }
             
-            // TODO: Build the complete URL with city and API key
-            string url = $"";
+            // TODO: Build the complete URL with city and API key //DONE
+            string url = $"{baseUrl}?q={city}&appid={apiKey}";
             
             // TODO: Create UnityWebRequest and use modern async pattern
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
-                // TODO: Use async/await, send the request and wait for response
+                // TODO: Use async/await, send the request and wait for response //DONE
+                await request.SendWebRequest();
                 
-                // TODO: Implement proper error handling for different result types
+                // TODO: Implement proper error handling for different result types //DONE
                 // Check request.result for Success, ConnectionError, ProtocolError, DataProcessingError
+                switch (request.result)
+                {
+                    case UnityWebRequest.Result.Success:
+                        return ParseWeatherData(request.downloadHandler.text);
+                
+                    case UnityWebRequest.Result.ConnectionError:
+                        Debug.LogError($"Network connection failed: {request.error}");
+                        break;
+                
+                    case UnityWebRequest.Result.ProtocolError:
+                        Debug.LogError($"HTTP Error {request.responseCode}: {request.error}");
+                        break;
+                
+                    case UnityWebRequest.Result.DataProcessingError:
+                        Debug.LogError($"Data processing failed: {request.error}");
+                        break;
+                }
+        
+                return null;
                 
                 // TODO: Parse JSON response using Newtonsoft.Json
                 
@@ -76,5 +97,25 @@ namespace WeatherApp.Services
                 Debug.LogError("Failed to get weather data");
             }
         }
+        
+        private WeatherData ParseWeatherData(string json)
+        {
+            try
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    MissingMemberHandling = MissingMemberHandling.Ignore,
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+                return JsonConvert.DeserializeObject<WeatherData>(json, settings);
+            }
+            catch (JsonException ex)
+            {
+                Debug.LogError($"JSON parsing failed: {ex.Message}");
+                return null;
+            }
+        }
     }
+    
+    
 }
