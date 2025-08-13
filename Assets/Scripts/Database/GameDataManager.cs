@@ -33,17 +33,23 @@ namespace Databases
             }
         }
         
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         private void InitializeDatabase()
         {
             try
             {
                 // TODO: Set up database path using Application.persistentDataPath
-                _databasePath = "";
+                _databasePath = ""; //DONE
                 
-                // TODO: Create SQLite connection
+                _databasePath = System.IO.Path.Combine(Application.persistentDataPath, databaseName);
+                
+                // TODO: Create SQLite connection //DONE
+                
+                _database = new SQLiteConnection(_databasePath);
 
-                // TODO: Create tables for game data
+                // TODO: Create tables for game data //DONE
+                
+                _database.CreateTable<HighScore>();
 
                 Debug.Log($"Database initialized at: {_databasePath}");
             }
@@ -55,13 +61,22 @@ namespace Databases
         
         #region High Score Operations
         
-        /// TODO: Students will implement this method
-        public void AddHighScore(string playerName, int score, string levelName = "Default")
+        /// TODO: Students will implement this method //DONE
+        public void AddHighScore(string playerName, int score, string levelName, float completionTime = 0f)
         {
             try
             {
-                // TODO: Create a new HighScore object
-                // TODO: Insert it into the database using _database.Insert()
+                // TODO: Create a new HighScore object //DONE
+                var newHighScore = new HighScore
+                {
+                    PlayerName = playerName,
+                    Score = score,
+                    LevelName = levelName,
+                    AchievedAt = System.DateTime.Now
+                };
+                
+                // TODO: Insert it into the database using _database.Insert() //DONE
+                _database.Insert(newHighScore);
                 
                 Debug.Log($"High score added: {playerName} - {score} points");
             }
@@ -71,14 +86,17 @@ namespace Databases
             }
         }
         
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         public List<HighScore> GetTopHighScores(int limit = 10)
         {
             try
             {
-                // TODO: Query the database for top scores
+                // TODO: Query the database for top scores //DONE
                 
-                return new List<HighScore>(); // Placeholder - students will replace this
+                return _database.Table<HighScore>()
+                    .OrderByDescending(s => s.Score)
+                    .Take(limit)
+                    .ToList();
             }
             catch (Exception ex)
             {
@@ -87,14 +105,19 @@ namespace Databases
             }
         }
         
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         public List<HighScore> GetHighScoresForLevel(string levelName, int limit = 10)
         {
             try
             {
-                // TODO: Query the database for scores filtered by level
+                // TODO: Query the database for scores filtered by level //DONE
                 
-                return new List<HighScore>(); // Placeholder - students will replace this
+                return _database.Table<HighScore>()
+                    .Where(s => s.LevelName == levelName)
+                    .OrderByDescending(s => s.Score)
+                    .Take(limit)
+                    .ToList();
+                
             }
             catch (Exception ex)
             {
@@ -107,14 +130,15 @@ namespace Databases
         
         #region Database Utility Methods
         
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         public int GetHighScoreCount()
         {
             try
             {
-                // TODO: Count the total number of high scores
+                // TODO: Count the total number of high scores //DONE
                 
-                return 0; // Placeholder - students will replace this
+                return _database.Table<HighScore>().Count();
+                
             }
             catch (Exception ex)
             {
@@ -123,13 +147,13 @@ namespace Databases
             }
         }
         
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         public void ClearAllHighScores()
         {
             try
             {
-                // TODO: Delete all high scores from the database
-                
+                // TODO: Delete all high scores from the database //DONE
+                _database.DeleteAll<HighScore>();
                 Debug.Log("All high scores cleared");
             }
             catch (Exception ex)

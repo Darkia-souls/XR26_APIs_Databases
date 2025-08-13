@@ -16,7 +16,7 @@ namespace Databases.UI
         [SerializeField] private TextMeshProUGUI displayText;
         [SerializeField] private TMP_InputField playerNameInput;
         [SerializeField] private TMP_InputField scoreInput;
-
+        
         private void Start()
         {
             SetupUI();
@@ -24,7 +24,7 @@ namespace Databases.UI
 
         private void SetupUI()
         {
-            // TODO: Students will connect these button events
+            // TODO: Students will connect these button events //DONE
             if (addHighScoreButton != null)
                 addHighScoreButton.onClick.AddListener(OnAddHighScore);
 
@@ -44,7 +44,7 @@ namespace Databases.UI
             UpdateDisplay("Database Test UI Ready\nClick buttons to test database operations");
         }
 
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         private void OnAddHighScore()
         {
             try
@@ -54,7 +54,9 @@ namespace Databases.UI
 
                 if (int.TryParse(scoreText, out int score))
                 {
-                    // TODO: Use GameDataManager to add the high score
+                    // TODO: Use GameDataManager to add the high score //DONE
+
+                    GameDataManager.Instance.AddHighScore(playerName, score, "TestLevel");
 
                     UpdateDisplay($"High score added: {playerName} - {score} points");
 
@@ -73,14 +75,14 @@ namespace Databases.UI
             }
         }
 
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         private void OnShowHighScores()
         {
             try
             {
-                // TODO: Use GameDataManager to get high scores
+                // TODO: Use GameDataManager to get high scores //DONE
 
-                var scores = new List<HighScore>(); // Placeholder - students will replace this
+                List<HighScore> scores = GameDataManager.Instance.GetTopHighScores();
 
                 if (scores.Count == 0)
                 {
@@ -103,12 +105,14 @@ namespace Databases.UI
             }
         }
 
-        /// TODO: Students will implement this method
+        /// TODO: Students will implement this method //DONE
         private void OnClearData()
         {
             try
             {
-                // TODO: Use GameDataManager to clear all high scores
+                // TODO: Use GameDataManager to clear all high scores //DONE
+
+                GameDataManager.Instance.ClearAllHighScores();
 
                 UpdateDisplay("All high scores cleared from database");
             }

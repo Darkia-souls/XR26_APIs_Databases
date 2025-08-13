@@ -3,19 +3,22 @@ using SQLite;
 
 namespace Databases
 {
-    /// TODO: Students will add SQLite attributes
+    /// TODO: Students will add SQLite attributes //DONE 
     [Table("HighScores")]
     public class HighScore
     {
-        // TODO: Students will add the correct SQLite attributes
+        // TODO: Students will add the correct SQLite attributes //DONE
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         
-        // TODO: Add [Indexed] attribute for frequently queried fields
+        // TODO: Add [Indexed] attribute for frequently queried fields //DONE
+        [Indexed]
         public string PlayerName { get; set; }
         
         public int Score { get; set; }
         
-        // TODO: Add [Indexed] attribute here too
+        // TODO: Add [Indexed] attribute here too //DONE 
+        [Indexed] 
         public string LevelName { get; set; }
         
         public DateTime AchievedAt { get; set; }
